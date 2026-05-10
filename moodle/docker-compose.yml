@@ -1,0 +1,45 @@
+services:
+  db:
+    image: mariadb:10.6
+    container_name: moodle_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: TU_ROOT_PASSWORD
+      MYSQL_DATABASE: moodle
+      MYSQL_USER: TU_USUARIO
+      MYSQL_PASSWORD: TU_CONTRASEÑA
+    volumes:
+      - db_data:/var/lib/mysql
+
+
+  moodle:
+    build: .  # Usa Dockerfile para crear la imagen
+    container_name: moodle_app
+    restart: always
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - db
+    volumes:
+      # Solo mapea moodledata para los archivos que suban los alumnos
+      - moodledata:/var/moodledata
+
+      #Monta el plugin BiViR@ desde el host al contenedor
+      #Así el plugín persiste aunque el contenedor se reconstruya
+      - ./bivira_modulos:/var/www/html/blocks/bivira_modulos
+
+      #Monta los certificados SSL generados en el host
+      #dentro del contenedor para que Apache pueda usarlos
+      - /etc/ssl/bivira:/etc/ssl/bivira
+      #Monta el fichero de configuración SSL de Apache
+      #desde el host al directorio de sitios disponibles de Apache
+      - ./bivira-ssl.conf:/etc/apache2/sites-available/bivira-ssl.conf
+      #Persistencia de configuración de moodle
+      - ./config.php:/var/www/html/config.php
+      #Cada vez que se construya la imagen, SSL esté activado
+      - ./ssl-entrypoint.sh:/final-docker-entrypoint.d/99-ssl.sh
+
+volumes:
+  db_data:      # Persistencia de la Base de Datos
+  moodledata:   # Persistencia de los archivos (PDFs, fotos, etc.)

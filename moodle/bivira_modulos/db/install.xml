@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="blocks/bivira_modulos/db" VERSION="20250101"
+       COMMENT="Tabla para módulos seguidos por usuarios de BiViR@">
+  <TABLES>
+    <TABLE NAME="block_bivira_seguidos" COMMENT="Módulos seguidos por cada usuario">
+      <FIELDS>
+        <FIELD NAME="id"       TYPE="int"  LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid"   TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="courseid" TYPE="int"  LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid_courseid" UNIQUE="true" FIELDS="userid, courseid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

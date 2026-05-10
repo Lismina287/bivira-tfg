@@ -1,0 +1,4 @@
+db_data/
+moodle_data/
+*.log
+.env
