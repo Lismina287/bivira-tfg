@@ -1,0 +1,24 @@
+# Certificados SSL
+*.key
+*.crt
+*.pem
+
+# Backups de base de datos
+*.sql
+backups/
+
+# Configuración con credenciales reales
+config.php
+docker-compose.yml
+
+# Datos de Moodle
+moodledata/
+db_data/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Variables de entorno
+.env
+*.env
