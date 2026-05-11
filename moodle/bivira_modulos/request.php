@@ -22,6 +22,26 @@ if ($action === 'solicitar') {
         $record->estado      = 'pendiente';
         $record->timecreated = time();
         $DB->insert_record('block_bivira_solicitudes', $record);
+
+// Notificar a todos los administradores del sitio
+        $admins = get_admins();
+        foreach ($admins as $admin) {
+            $message                    = new \core\message\message();
+            $message->component         = 'block_bivira_modulos';
+            $message->name              = 'nueva_solicitud';
+            $message->userfrom          = $USER;
+            $message->userto            = $admin;
+            $message->subject           = 'BiViR@: Nueva solicitud de Colaborador';
+            $message->fullmessage       = fullname($USER) . ' ha solicitado el rol Colaborador en el módulo "' . format_string($course->fullname) . '".';
+            $message->fullmessageformat = FORMAT_PLAIN;
+            $message->fullmessagehtml   = '<p>' . fullname($USER) . ' ha solicitado el rol <strong>Colaborador BiViR@</strong> en el módulo <strong>' . format_string($course->fullname) . '</strong>.</p>
+                <p><a href="' . (new moodle_url('/blocks/bivira_modulos/admin_solicitudes.php', ['tab' => 'pendientes']))->out() . '">Ver solicitudes pendientes</a></p>';
+            $message->smallmessage      = fullname($USER) . ' solicita ser Colaborador en "' . format_string($course->fullname) . '"';
+            $message->notification      = 1;
+            $message->contexturl        = (new moodle_url('/blocks/bivira_modulos/admin_solicitudes.php'))->out();
+            $message->contexturlname    = 'Gestionar solicitudes';
+            message_send($message);
+        }
     }
 } else if ($action === 'aprobar') {
     require_capability('moodle/role:assign', $context);

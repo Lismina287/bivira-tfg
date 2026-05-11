@@ -25,6 +25,25 @@ class block_bivira_modulos extends block_base {
         $html = '';
         $isadmin = is_siteadmin($USER->id);
 
+	// ── Panel de administración (solo admin) ────────────────────────────
+        if ($isadmin) {
+            $pendientes = $DB->count_records('block_bivira_solicitudes', ['estado' => 'pendiente']);
+            $urlAdmin   = new moodle_url('/blocks/bivira_modulos/admin_solicitudes.php');
+
+            if ($pendientes > 0) {
+                $html .= '<a href="'.$urlAdmin.'" class="btn btn-sm btn-danger w-100 mb-2">
+                            📋 Solicitudes pendientes
+                            <span class="badge bg-white text-danger ms-1">'.$pendientes.'</span>
+                          </a>';
+            } else {
+                $html .= '<a href="'.$urlAdmin.'" class="btn btn-sm btn-outline-secondary w-100 mb-2">
+                            📋 Gestionar solicitudes
+                          </a>';
+            }
+            $html .= '<hr>';
+        }
+
+	// ── Dentro de un curso ──────────────────────────────────────────────
         if ($COURSE->id != SITEID) {
             $context = context_course::instance($COURSE->id);
 
@@ -97,6 +116,8 @@ class block_bivira_modulos extends block_base {
             }
         }
 
+
+	// ── Módulos seguidos ────────────────────────────────────────────────
         $seguidos = $DB->get_records('block_bivira_seguidos', ['userid' => $USER->id]);
 
         if (!empty($seguidos)) {
@@ -112,6 +133,8 @@ class block_bivira_modulos extends block_base {
         } else {
             $html .= '<p class="text-muted small">Aún no sigues ningún módulo.</p>';
         }
+
+	// ── Buscador ────────────────────────────────────────────────────────
 
         $html .= '<hr><h6><strong>🔍 Buscar módulo</strong></h6>
         <form method="get" action="/course/index.php">
