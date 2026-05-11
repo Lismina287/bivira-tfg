@@ -136,11 +136,17 @@ class block_bivira_modulos extends block_base {
 
 	// ── Buscador ────────────────────────────────────────────────────────
 
-        $html .= '<hr><h6><strong>🔍 Buscar módulo</strong></h6>
-        <form method="get" action="/course/index.php">
-            <input type="text" name="search" class="form-control form-control-sm mb-2" placeholder="Nombre del módulo...">
-            <button type="submit" class="btn btn-sm btn-primary w-100">Buscar</button>
-        </form>';
+	$searchurl = new moodle_url('/course/search.php');
+	$html .= '<hr>
+          	<h6><strong>🔍 Buscar módulo</strong></h6>
+          	<form method="get" action="'.$searchurl.'">
+              		<input type="text"
+                     		name="search"
+                     		class="form-control form-control-sm mb-2"
+                     		placeholder="Nombre del módulo...">
+              		<button type="submit" class="btn btn-sm btn-primary w-100">Buscar</button>
+          	</form>';
+
 
         $this->content->text = $html;
         return $this->content;
