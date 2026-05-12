@@ -30,7 +30,7 @@ bivira-tfg/
 │
 ├── moodle/
 │   ├── Dockerfile
-│   ├── docker-compose.yml
+│   ├── docker-compose.yml.example
 │   ├── config.php.example
 │   ├── bivira-ssl.conf
 │   ├── ssl-entrypoint.sh
