@@ -1,3 +1,6 @@
+<img width="460" height="501" alt="BiViR@" src="https://github.com/user-attachments/assets/139508f5-9190-4662-8f5d-f92a67e16e88" />
+
+
 # BiViR@ — Biblioteca Virtual y Recursos Académicos para FP
 
 > Proyecto Integrador ASIR · IES Doctor Fleming · 2026  
